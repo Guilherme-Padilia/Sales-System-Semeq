@@ -1,9 +1,13 @@
 from django.urls import path
-from .views import new_sale, modules, sales_history, index
+from . import views
 
 urlpatterns = [
-    path('sales/create/', new_sale),  
-    path('sales/history/', sales_history),
-    path('modules/', modules),
-    path('', index),
+    path('sales/', views.new_sale),  
+    path('sales/create/', views.create_sale),
+    path('sales/search-customers/', views.search_customer),
+    path('sales/search-addresses/', views.search_address_by_cep),
+    path('sales/history/', views.sales_history),
+    path('sales/history/', views.sales_history),
+    path('modules/', views.modules),
+    path('', views.index),
 ]

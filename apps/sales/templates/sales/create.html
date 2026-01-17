@@ -3,6 +3,7 @@
 {% block title %}Nova Venda{% endblock %}
 
 {% block content %}
+
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-2 mt-2">
         <h3 class="mb-2">
@@ -32,7 +33,14 @@
                                 <input
                                     type="search"
                                     class="form-control"
+                                    id="SearchCustomer"
                                     placeholder="Buscar por nome">
+
+                                <ul
+                                    class="list-group position-absolute w-100 d-none"
+                                    id="CustomerResults"
+                                    style="top: 100%; z-index: 1050;">
+                                </ul>
                             </div>
                         </div>
 
@@ -40,16 +48,17 @@
                             <label class="form-label fw-semibold">Nome Cliente</label>
                             <input
                                 type="text"
-                                class="form-control">
+                                class="form-control"
+                                id="CustomerName" readonly>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-semibold">Telefone Cliente</label>
                             <input
                                 type="text"
-                                class="form-control">
+                                class="form-control"
+                                id="CustomerPhone" readonly>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -75,7 +84,9 @@
                                 <input
                                     type="text"
                                     class="form-control"
-                                    placeholder="00000-000">
+                                    id="SearchAddressCEP"
+                                    placeholder="00000-000"
+                                    maxlength="8">
                             </div>
                         </div>
 
@@ -84,7 +95,8 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                placeholder="Rua, Avenida, etc.">
+                                id="AddressStreet"
+                                placeholder="Rua, Avenida, etc." readonly>
                         </div>
 
                         <div class="col-12 col-lg-2">
@@ -92,6 +104,7 @@
                             <input
                                 type="text"
                                 class="form-control"
+                                id="AddressNumber"
                                 placeholder="Nº">
                         </div>
 
@@ -100,21 +113,24 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                placeholder="Apto, Bloco, etc.">
+                                id="AddressComplement"
+                                placeholder="Apto, Bloco, etc." readonly>
                         </div>
 
                         <div class="col-12 col-md-6">
                             <label class="form-label fw-semibold">Bairro</label>
                             <input
                                 type="text"
-                                class="form-control">
+                                id="AddressNeighbordhood"
+                                class="form-control" readonly>
                         </div>
 
                         <div class="col-12 col-md-8">
                             <label class="form-label fw-semibold">Cidade</label>
                             <input
                                 type="text"
-                                class="form-control">
+                                id="AddressCity"
+                                class="form-control" readonly>
                         </div>
 
                         <div class="col-12 col-md-4">
@@ -123,9 +139,9 @@
                                 type="text"
                                 class="form-control"
                                 maxlength="2"
-                                placeholder="SP">
+                                id="AddressState"
+                                placeholder="SP" readonly>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -136,28 +152,47 @@
     <!-- PRODUTOS -->
     <div class="card shadow-sm mb-3">
         <div class="card-header bg-light">
-            <h6 class="mb-0"><i class="bi bi-box-seam me-2"></i>Produtos</h6>
+            <h6 class="mb-0">
+                <i class="bi bi-box-seam me-2"></i>Produtos
+            </h6>
         </div>
-        
+
         <div class="card-body">
-            <div class="row g-3 mb-3">
-                <div class="col-md-10">
+            <div class="row g-3 mb-3 align-items-end">
+                
+                <!-- Buscar produto -->
+                <div class="col-md-8">
                     <label class="form-label fw-semibold">Buscar produto *</label>
-                    
                     <div class="input-group">
                         <span class="input-group-text bg-white">
                             <i class="bi bi-search"></i>
                         </span>
-                        
-                        <input type="search" 
-                               class="form-control" 
-                               placeholder="Buscar produto" 
-                               aria-label="Buscar produto" />
+                        <input type="search"
+                            class="form-control"
+                            id="SearchProduct"
+                            placeholder="Buscar produto"
+                            aria-label="Buscar produto" />
+
+                        <ul
+                            class="list-group position-absolute w-100 d-none"
+                            id="ProductsResults"
+                            style="top: 100%; z-index: 1050;">
+                        </ul>
                     </div>
                 </div>
-                
-                <div class="col-md-2 d-flex align-items-end">
-                    <button class="btn btn-primary w-100">
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Valor</label>
+                    <input type="text"
+                        class="form-control"
+                        id="ProductPrice"
+                        placeholder="Valor produto"
+                        aria-label="Valor produto" />
+                </div>
+
+                <!-- Botão -->
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" id="AddProductBtn">
                         <i class="bi bi-plus-circle me-1"></i>Adicionar
                     </button>
                 </div>
@@ -169,7 +204,6 @@
     <div class="card shadow-sm mb-3">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <h6 class="mb-0"><i class="bi bi-cart3 me-2"></i>Itens do Carrinho</h6>
-            <span class="badge bg-secondary">1 item</span>
         </div>
         
         <div class="card-body p-0">
@@ -182,17 +216,11 @@
                             <th class="text-center" style="width: 12%">Qtd</th>
                             <th class="text-end" style="width: 13%">Preço Unit.</th>
                             <th class="text-end" style="width: 13%">Subtotal</th>
-                            <th class="text-center" style="width: 7%">Ações</th>
+                            <th class="text-center" style="width: 7%">Excluir</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="CartItems">
                         <tr>
-                            <td> <strong>Produto 1</strong> </td>
-                            <td>Fornecedor X</td>
-                            <td> <input type="number" class="form-control text-center" value="1" min="1" style="max-width: 70px"> </td>
-                            <td class="text-end"> <input type="number" class="form-control form-control-sm text-end" value="10.00" step="0.01" min="0"> </td>
-                            <td class="text-end"> <strong class="text-success">R$ 10,00</strong> </td>
-                            <td class="text-center"> <button class="btn btn-sm btn-outline-danger" title="Remover item"> <i class="bi bi-trash"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -209,12 +237,12 @@
                 </div>
                 
                 <div class="card-body">
-                    <select class="form-select mb-2">
+                    <select class="form-select mb-2" id="PaymentType">
                         <option selected>Selecione a forma de pagamento</option>
-                        <option value="1">Dinheiro</option>
-                        <option value="2">Cartão de Crédito</option>
-                        <option value="3">Cartão de Débito</option>
-                        <option value="4">PIX</option>
+                        <option value="DIN">Dinheiro</option>
+                        <option value="CRED">Cartão de Crédito</option>
+                        <option value="DEB">Cartão de Débito</option>
+                        <option value="PIX">PIX</option>
                     </select>
                 </div>
             </div>
@@ -229,14 +257,14 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Subtotal:</span>
-                        <span>R$ 10,00</span>
+                        <span id="SaleSubTotal">R$ 00,00</span>
                     </div>
                     
                     <hr>
                     
                     <div class="d-flex justify-content-between">
                         <h5 class="mb-0">Total:</h5>
-                        <h4 class="mb-0 text-success">R$ 10,00</h4>
+                        <h4 class="mb-0 text-success" id="SaleTotal">R$ 00,00</h4>
                     </div>
                 </div>
             </div>
@@ -245,12 +273,12 @@
 
     <!-- CANCELAR OU CONCLUIR -->
     <div class="d-flex justify-content-between gap-2 mb-4">
-        <button class="btn btn-outline-secondary">
+        <button class="btn btn-outline-secondary" id="ExitSaleBtn">
             <i class="bi bi-x-circle me-1"></i>Cancelar
         </button>
         
         <div class="d-flex gap-2">
-            <button class="btn btn-success btn-lg">
+            <button class="btn btn-success btn-lg" id="FinishSaleBtn">
                 <i class="bi bi-check-circle me-1"></i>Finalizar Venda
             </button>
         </div>
@@ -258,4 +286,11 @@
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% load static %}
+<script src="{% static 'sales/js/sale_state.js' %}"></script>
+<script src="{% static 'sales/js/create_sale.js' %}"></script>
+<script src="{% static 'sales/js/customer_events.js' %}"></script>
+<script src="{% static 'sales/js/address_events.js' %}"></script>
+<script src="{% static 'sales/js/product_events.js' %}"></script>
+<script src="{% static 'sales/js/payment_events.js' %}"></script>
 {% endblock %}

@@ -10,3 +10,4 @@ class Address(models.Model):
     
     class Meta:
         db_table = 'addresses'
+
