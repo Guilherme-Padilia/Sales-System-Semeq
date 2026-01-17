@@ -31,6 +31,9 @@ class SalePayment(models.Model):
     amount         = models.DecimalField(max_digits=10, decimal_places=2)
     is_active      = models.CharField(max_length=20)
 
+    class Meta:        
+        db_table = 'sale_payments'
+        
 class Customer(models.Model):
     id        = models.AutoField(primary_key=True)
     name      = models.CharField(max_length=100)

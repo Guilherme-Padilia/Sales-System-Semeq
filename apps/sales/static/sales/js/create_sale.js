@@ -9,8 +9,6 @@ function initFinishSale() {
     const btn = document.getElementById('FinishSaleBtn');
 
     btn.addEventListener('click', async () => {
-        console.log("finalizando venda")
-
         const state = window.saleState;
 
         if (!checkRequiredFields(state)) {
@@ -28,7 +26,10 @@ function initFinishSale() {
             body: JSON.stringify(window.saleState)
         });
 
-        console.log(response);
+        if (response.status = 200) {
+            alert('Venda concluida com sucesso!');
+            location.reload();
+        }
     });
 }
 

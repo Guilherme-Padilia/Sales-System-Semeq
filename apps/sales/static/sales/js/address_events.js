@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     initAddressSearch();
+    initAddressNumber();
 });
 
 function initAddressSearch() {
@@ -22,11 +23,29 @@ function initAddressSearch() {
 }
 
 function renderAddressResult(address) {
-    window.saleState.address = address;
+    window.saleState.address = {
+        cep: address.cep,
+        street: address.logradouro,
+        complement: address.complemento,
+        neighbordhood: address.bairro,
+        city: address.localidade,
+        state: address.uf
+    };
 
     document.getElementById('AddressStreet').value        = address.logradouro;
     document.getElementById('AddressComplement').value    = address.complemento;
     document.getElementById('AddressNeighbordhood').value = address.bairro;
     document.getElementById('AddressCity').value          = address.localidade;
     document.getElementById('AddressState').value         = address.uf;
+}
+
+function initAddressNumber() {
+    const input = document.getElementById('AddressNumber');
+
+    input.addEventListener('input', () => {
+        const number = input.value.trim();
+
+        window.saleState.address.number = number;
+    })
+        
 }
