@@ -1,0 +1,12 @@
+from django.db import models
+
+class Product(models.Model):
+    id          = models.AutoField(primary_key=True)
+    name        = models.CharField(max_length=100)
+    description = models.TextField()
+    price       = models.DecimalField(max_digits=10, decimal_places=2)
+    supplier_id = models.ForeignKey('suppliers.Supplier', on_delete=models.CASCADE) 
+    is_active   = models.BooleanField(default=True)
+    
+    class Meta:
+        db_table = 'products'
