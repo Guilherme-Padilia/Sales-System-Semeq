@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 from django.http import JsonResponse
 from django.utils.timezone import localtime, make_aware
@@ -23,10 +23,6 @@ def sales_history(request):
 
 def modules(request):
     return render(request, 'sales\modules.html')
-
-def index(request):
-    return redirect('modules/')
-
 
 @require_GET
 def search_customer(request):

@@ -9,5 +9,4 @@ urlpatterns = [
     path('history/', views.sales_history),
     path('history/sales/', views.get_sales),
     path('modules/', views.modules),
-    path('', views.index),
 ]

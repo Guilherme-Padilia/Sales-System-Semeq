@@ -3,9 +3,20 @@ from django.core.management.base import BaseCommand
 from ...models import Customer
 from ....products.models import Product
 from ....suppliers.models import Supplier
+from ....login.models import User
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        user, _ = User.objects.get_or_create(
+            name='FUNCIONARIO PADRAO',
+            defaults={
+                'email': 'funcionario@teste.com',
+                'password': '123456',
+                'is_active': True,
+            }    
+        )
+        
         supplier, _ = Supplier.objects.get_or_create(
             name='FORNECEDOR DE BEBIDAS',
             defaults={

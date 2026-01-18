@@ -32,7 +32,7 @@ Banco de Dados
 
 
 
-# 🚀 Passo a Passo para rodar o projeto:
+# 🚀 Passo a passo para rodar o projeto:
 
 1 - Clonar Respositório:
 ```javascript
@@ -87,7 +87,31 @@ python manage.py runserver
 ```javascript
 http://127.0.0.1:8000
 ```
-## 🧪 Como Testar o Sistema
+
+10 - Utilizar o login e senha padrão:
+```javascript
+email: funcionario@teste.com
+senha: 123456
+```
+
+## 🧪 Como rodar os testes unitários:
+
+1 - Rodar os testes:
+```javascript
+coverage run --source='.' manage.py test
+```
+
+2 - Gerar relatório HTML:
+```javascript
+coverage html
+```
+
+3 - Abrir arquivo htmlcov/index.html para conferir a % de cobertura:
+```javascript
+Sales-System-Semeq\htmlcov\index.html
+```
+
+## 💻 Como utilizar o sistema:
 
 ✔ Criar uma Venda
 * Acesse Nova Venda
@@ -101,9 +125,6 @@ http://127.0.0.1:8000
 ✔ Verificar o histórico
 * Acesse histórico de vendas
 * Verifique as vendas concluídas
-
-
-
 
 ## 👨‍💻 Autor
 
