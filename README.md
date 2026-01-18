@@ -57,14 +57,15 @@ pip install -r requirements.txt
 
 5 - Criar arquivo .env na raiz do projeto:
 ```javascript
-POSTGRES_DB=sales_db
+POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 
-MONGO_URI=mongodb://localhost:27017
-MONGO_DB=sales_history
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_DB_NAME=sales_semeq_system
 ```
 
 6 - Rodar as migrations:
