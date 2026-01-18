@@ -1,4 +1,6 @@
 from django.db import models
+# from djongo import models as djongo_models
+
 
 class Sale(models.Model):
     id         = models.AutoField(primary_key=True)
@@ -43,3 +45,5 @@ class Customer(models.Model):
     
     class Meta:
         db_table = 'customers'
+        
+# class SaleHistory(djongo_models.Model):

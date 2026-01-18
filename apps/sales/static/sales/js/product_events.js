@@ -17,6 +17,13 @@ function initProductSearch() {
         renderProductResult(data, results);
     });
 
+    input.addEventListener('click', async () => {
+        const response = await fetch(`/products/search/`);
+        const data = await response.json();
+
+        renderProductResult(data, results);
+    });
+
     document.addEventListener('click', (e) => {
         if (!input.contains(e.target) && !results.contains(e.target)) {
             results.classList.add('d-none');
@@ -159,8 +166,8 @@ function renderCart() {
         `;
     });
 
-    document.getElementById('SaleSubTotal').innerText = 'R$ ' + window.saleState.totals.subtotal;
-    document.getElementById('SaleTotal').innerText = 'R$ ' + window.saleState.totals.total;
+    document.getElementById('SaleSubTotal').innerText = 'R$ ' + Number(window.saleState.totals.subtotal).toFixed(2);
+    document.getElementById('SaleTotal').innerText = 'R$ ' + Number(window.saleState.totals.total).toFixed(2);
 }
 
 function updateItemQuantity(index, value) {

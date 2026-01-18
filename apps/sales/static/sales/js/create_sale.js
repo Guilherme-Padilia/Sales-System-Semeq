@@ -26,10 +26,13 @@ function initFinishSale() {
             body: JSON.stringify(window.saleState)
         });
 
-        if (response.status = 200) {
-            alert('Venda concluida com sucesso!');
+        if (response.status != 201) {
+            alert('Falha ao finalizar a venda!');
+        } else {
+            alert('Venda finalizada com sucesso!');
             location.reload();
         }
+
     });
 }
 
@@ -52,12 +55,17 @@ function checkRequiredFields(state){
         return false;
     }
 
-    if (!state.items) {
+    if (!state.address.number) {
+        alert('Informe o número de endereço de entrega.');
+        return false;
+    }
+
+    if (!state.items.length) {
         alert('Adicione ao menos um produto no carrinho.');
         return false;
     }
 
-    if (!state.payment) {
+    if (!state.payment.type) {
         alert('Selecione a forma de pagamento.');
         return false;
     }

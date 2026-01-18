@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_GET, require_POST
 from django.http import JsonResponse
+from setup.mongodb import get_mongo_connection
 
 from .models import Customer, Sale, SaleItem, SalePayment
 from ..addresses.models import Address
@@ -68,7 +69,6 @@ def search_address_by_cep(request):
 def create_sale(request):
     try:
         payload = json.loads(request.body.decode('utf-8'))
-        print(request.body.decode('utf-8'))
     except json.JSONDecodeError:
         return JsonResponse({'error': 'invalid payload'}, status=400)
         
@@ -94,8 +94,6 @@ def create_sale(request):
             state    = address_data.get('state'),
             number   = address_data.get('number', ''),
         )
-        
-        print('Inseriu endereço')
     except Address.DoesNotExist:
         print(traceback.format_exc())
         return JsonResponse({'error': 'Address not found'}, status=404)
@@ -109,15 +107,12 @@ def create_sale(request):
             status     = 'CONFIRMED'
         )
         
-        print('Inseriu Venda')
-        
         for item in items:
             try:
                 product = Product.objects.get(
                     id=item.get('product_id'),
                     is_active=True
                 )
-                print('consutlou produto')
             except Product.DoesNotExist:
                 print(traceback.format_exc())
                 raise Exception(f"Product {item['product_id']} not found")
@@ -133,8 +128,6 @@ def create_sale(request):
                 unit_price  = unit_price,
                 total_price = total_price
             )
-            
-            print('Inseriu item')
     except:
         print(traceback.format_exc())
         return JsonResponse({'error': 'Error creating sale'}, status=500)
@@ -147,10 +140,42 @@ def create_sale(request):
             is_active      = True
         )
         
-        print('Inseriu pagamento')
     except:
         print(traceback.format_exc())
-        
+        return JsonResponse({'error': 'Error creating sale payment'}, status=500)
+    
+    try:    
+        db = get_mongo_connection()
+        collection = db['sales']
+
+        collection.insert_one({
+            'id': sale.id,
+            'date': sale.date,
+            'total': float(sale.total_sale),
+            'status': sale.status,
+            'customer': customer.name,   
+        })
+    except:
+        print(traceback.format_exc())
+        return JsonResponse({'error': 'Error on saving sale on mongo'}, status=500)
     
     return JsonResponse({'success': True, 'sale_id': sale.id}, status=201)
+
+
+def get_sales(request):
+    db = get_mongo_connection()
+    collection = db['sales']
+    
+    sales = []
+    
+    for sale in collection.find():
+        sales.append({
+            'id': sale['id'],
+            'date': sale['date'],
+            'total': sale['total'],
+            'status': sale['status'],
+            'customer': sale['customer'],
+        })
+        
+    return JsonResponse(sales, safe=False)
     

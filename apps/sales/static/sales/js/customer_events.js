@@ -21,6 +21,13 @@ function initCustomerSearch() {
             results.classList.add('d-none');
         }
     });
+
+    input.addEventListener('click', async () => {
+        const response = await fetch(`/sales/search-customers/`);
+        const customers = await response.json();
+
+        renderCustomerResults(customers, results);
+    });
 }
 
 function selectCustomer(customer) {

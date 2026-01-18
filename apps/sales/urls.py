@@ -6,8 +6,8 @@ urlpatterns = [
     path('sales/create/', views.create_sale),
     path('sales/search-customers/', views.search_customer),
     path('sales/search-addresses/', views.search_address_by_cep),
-    path('sales/history/', views.sales_history),
-    path('sales/history/', views.sales_history),
+    path('history/', views.sales_history),
+    path('history/sales/', views.get_sales),
     path('modules/', views.modules),
     path('', views.index),
 ]

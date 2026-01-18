@@ -26,6 +26,4 @@ def search_products(request):
             "supplier": product.supplier.name
         })
         
-        
-    print(data)
     return JsonResponse(data, safe=False)
