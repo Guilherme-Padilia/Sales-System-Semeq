@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_GET, require_POST
 from django.http import JsonResponse
+from django.utils.timezone import localtime, make_aware
 from setup.mongodb import get_mongo_connection
 
 from .models import Customer, Sale, SaleItem, SalePayment
@@ -10,7 +11,9 @@ from ..products.models import Product
 import traceback
 import requests
 import json
+
 from decimal import Decimal
+from datetime import timezone
 
 def new_sale(request):
     return render(request, 'sales\create.html')
@@ -169,9 +172,12 @@ def get_sales(request):
     sales = []
     
     for sale in collection.find():
+        date = make_aware(sale['date'], timezone.utc)
+        date = localtime(date)
+        
         sales.append({
             'id': sale['id'],
-            'date': sale['date'],
+            'date': date,
             'total': sale['total'],
             'status': sale['status'],
             'customer': sale['customer'],
