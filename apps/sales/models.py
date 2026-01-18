@@ -45,5 +45,3 @@ class Customer(models.Model):
     
     class Meta:
         db_table = 'customers'
-        
-# class SaleHistory(djongo_models.Model):

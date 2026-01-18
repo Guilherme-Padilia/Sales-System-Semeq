@@ -177,5 +177,4 @@ def get_sales(request):
             'customer': sale['customer'],
         })
         
-    return JsonResponse(sales, safe=False)
-    
+    return JsonResponse(sales, safe=False)   
